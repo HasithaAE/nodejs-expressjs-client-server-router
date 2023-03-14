@@ -3,11 +3,17 @@
 
 // init project
 const express = require('express');
+const routes = require('./routes/routing');
+
 const morgan = require('morgan');
 const app = express();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser());
+
+// middleware for exposing data on req.body
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(morgan());
 
 // we've started you off with Express,
@@ -17,9 +23,12 @@ app.use(morgan());
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
-app.get('/', (request, response) => {
-  response.sendFile(__dirname + '/views/index.html');
-});
+// app.get('/', (request, response) => {
+//   response.sendFile(__dirname + '/views/index.html');
+// });
+
+// using routes middleware
+app.use('/', routes);
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT || 3000, function () {
